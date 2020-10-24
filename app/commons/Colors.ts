@@ -1,0 +1,9 @@
+export const Colors = {
+  MYSTIC: '#D7E9EA',
+  ICE_COLD: '#B8F2F5',
+  SILVER: '#CCCCCC',
+  ROYAL_BLUE: '#4772DC',
+  CHETWODE_BLUE: '#859CD6',
+  MALACHITE: '#21DE46',
+  LILAC_BLUSH: '#AA85D6',
+};

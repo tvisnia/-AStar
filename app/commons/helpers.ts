@@ -36,7 +36,7 @@ export const initNodesGrid = (
   [...Array(size)].map((_, y) =>
     [...Array(size)].map((_, x) => {
       const node = defaultNode(x, y);
-      const h = calculateH(node, end);
+      const h = calculateEuclideanH(node, end);
       const isObstacle = !!obstacles.find((o) => equals(o, node));
       return isObstacle ? {...node, isObstacle} : {...node, h};
     }),
@@ -45,5 +45,5 @@ export const initNodesGrid = (
 export const getNodeWithSmallestF = (openNodes: Node[]): Node =>
   openNodes.sort((n1, n2) => n1.f - n2.f)[0];
 
-const calculateH = (node: Node, end: Point) =>
+const calculateEuclideanH = (node: Node, end: Point) =>
   Math.sqrt(Math.pow(node.x - end.x, 2) + Math.pow(node.y - end.y, 2));

@@ -14,7 +14,10 @@ export const calculatePath = (
   start: Point,
   end: Point,
   obstacles: Point[],
-): Node[] => {
+): {
+  grid?: Node[][];
+  path: Node[];
+} => {
   let grid: Node[][] = initNodesGrid(size, end, obstacles);
   const openNodes: Node[] = [];
   let closedNodes: Node[] = [];
@@ -97,8 +100,8 @@ export const calculatePath = (
   const endInClosedNodes = !!~closedNodes.findIndex((node) =>
     equals(node, end),
   );
+  const path: Node[] = [];
   if (endInClosedNodes) {
-    const path: Node[] = [];
     console.log('Path : ');
     let currentNode: Node = grid[end.y][end.x];
     path.push(currentNode);
@@ -109,9 +112,9 @@ export const calculatePath = (
     }
     path.reverse();
     path.forEach((node) => console.log(printNode(node)));
-    return path;
-  } else {
-    // Path does not exists
-    return [];
-  }
+  } else console.log('path does not exists.');
+  return {
+    path,
+    grid,
+  };
 };

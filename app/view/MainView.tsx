@@ -1,10 +1,10 @@
 import React, {memo, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Picker from '@gregfrench/react-native-wheel-picker';
+import OutlinedButton from '../components/OutlinedButton';
 import {Colors} from '../commons/Colors';
 import {GRID_SIDES} from '../commons/Const';
-import OutlinedButton from '../components/OutlinedButton';
-import {useNavigation} from '@react-navigation/native';
 
 var PickerItem = Picker.Item;
 

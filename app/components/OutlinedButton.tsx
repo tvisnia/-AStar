@@ -1,5 +1,5 @@
 import React, {FC, memo} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors} from '../commons/Colors';
 
 interface Props {
@@ -21,6 +21,7 @@ const OutlinedButton: FC<Props> = ({title, onPress, disabled}) => (
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: 16,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 16,

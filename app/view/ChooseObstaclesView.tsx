@@ -1,17 +1,19 @@
-import React, {memo, useState, useCallback} from 'react';
+import React, {memo, useState} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {useRoute} from '@react-navigation/native';
-import {Colors} from '../commons/Colors';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import GridItem from '../components/GridItem';
 import OutlinedButton from '../components/OutlinedButton';
+import {Colors} from '../commons/Colors';
 import {equals} from '../commons/helpers';
-import {Point} from '../commons/types';
 import {calculatePath} from '../algorithm/aStar';
+import {Point} from '../commons/types';
 
 const ChooseObstaclesView = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const [obstacles, setObstacles] = useState([]);
   const [path, setPath] = useState([]);
+  const [grid, setGrid] = useState([]);
 
   const {side, start, end} = route.params!;
 
@@ -27,18 +29,29 @@ const ChooseObstaclesView = () => {
     }
   };
 
+  const calculate = () => {
+    const {path, grid} = calculatePath(side, start, end, obstacles);
+    setPath(path);
+    setGrid(grid);
+  };
+
+  const reset = () => {
+    navigation.navigate('Main');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.title}>Wybierz przeszkody</Text>
         <View style={styles.gridContainer}>
           {[...Array(side)].map((_, y) => (
-            <View style={{flexDirection: 'row'}}>
+            <View style={styles.withRow}>
               {[...Array(side)].map((_, x) => (
-                <View style={{flexDirection: 'row'}}>
+                <View style={styles.withRow}>
                   <GridItem
                     x={x}
                     y={y}
+                    node={!!grid.length ? grid[y][x] : null}
                     side={side}
                     start={start}
                     end={end}
@@ -51,20 +64,27 @@ const ChooseObstaclesView = () => {
             </View>
           ))}
         </View>
-        <OutlinedButton
-          title="DALEJ"
-          onPress={() => {
-            const path = calculatePath(side, start, end, obstacles);
-            setPath(path);
-          }}
-          disabled={false}
-        />
+        <View style={styles.withRow}>
+          <OutlinedButton
+            title="URUCHOM"
+            onPress={calculate}
+            disabled={false}
+          />
+          <OutlinedButton
+            title="OD POCZĄTKU"
+            onPress={reset}
+            disabled={false}
+          />
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  withRow: {
+    flexDirection: 'row',
+  },
   container: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'white',
@@ -73,15 +93,6 @@ const styles = StyleSheet.create({
     marginVertical: 24,
   },
   title: {
-    fontSize: 24,
-  },
-  picker: {
-    width: 64,
-    height: 160,
-    margin: 24,
-  },
-  pickerItem: {
-    color: '#000',
     fontSize: 24,
   },
   card: {

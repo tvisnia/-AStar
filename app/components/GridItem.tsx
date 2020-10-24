@@ -8,6 +8,7 @@ interface Props {
   x: number;
   y: number;
   side: number;
+  node: Node | null;
   onPress: VoidFunction;
   obstacles?: Point[];
   path?: Node[];
@@ -24,6 +25,7 @@ const GridItem: FC<Props> = ({
   side,
   start,
   end,
+  node,
   obstacles,
   path,
   onPress,
@@ -32,8 +34,18 @@ const GridItem: FC<Props> = ({
   const isEnd = useMemo(() => end && equals(end, {x, y}), [end, x, y]);
 
   const isObstacle = useMemo(
-    () => obstacles && !!obstacles.find((o) => equals(o, {x, y})),
+    () =>
+      node
+        ? node.isObstacle
+        : obstacles && !!obstacles.find((o) => equals(o, {x, y})),
     [obstacles],
+  );
+  const f = useMemo(
+    () =>
+      node && !isObstacle && Math.round(node.f) !== 0
+        ? node.f.toPrecision(3)
+        : '',
+    [isObstacle, node],
   );
 
   const isPath = useMemo(() => path && !!path.find((n) => equals(n, {x, y})));
@@ -59,6 +71,7 @@ const GridItem: FC<Props> = ({
       ]}>
       {isStart && <Text style={styles.innerText}>S</Text>}
       {isEnd && <Text style={styles.innerText}>K</Text>}
+      {!!f && !isStart && !isEnd && <Text style={styles.smallerText}>{f}</Text>}
     </TouchableOpacity>
   );
 };
@@ -73,7 +86,11 @@ const styles = StyleSheet.create({
     borderColor: 'black',
   },
   innerText: {
+    textAlignVertical: 'center',
     fontSize: 24,
+  },
+  smallerText: {
+    fontSize: 12,
   },
 });
 

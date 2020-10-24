@@ -46,4 +46,4 @@ export const getNodeWithSmallestF = (openNodes: Node[]): Node =>
   openNodes.sort((n1, n2) => n1.f - n2.f)[0];
 
 const calculateH = (node: Node, end: Point) =>
-  Math.sqrt(Math.pow(node.x - end.x, 2) + Math.pow(node.y + end.y, 2));
+  Math.sqrt(Math.pow(node.x - end.x, 2) + Math.pow(node.y - end.y, 2));

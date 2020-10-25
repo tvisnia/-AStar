@@ -1,16 +1,16 @@
-import {defaultNode, Node} from './../model/Interfaces';
+import {defaultNode, Node as MNode} from './../model/Interfaces';
 import {Point} from './types';
 
-export const equals = (p1: Point | Node, p2: Point | Node) =>
+export const equals = (p1: Point | MNode, p2: Point | MNode) =>
   p1.x === p2.x && p1.y === p2.y;
 
-export const printNode = (node: Node) => `[${node.x},${node.y}]`;
+export const printNode = (node: MNode) => `[${node.x},${node.y}]`;
 
 export const checkNeighbour = (
-  currentNode: Node,
-  neighbour: Node,
+  currentNode: MNode,
+  neighbour: MNode,
   g: number,
-  openNodes: Node[],
+  openNodes: MNode[],
 ) => {
   const neighbourIsNotObstacle = !neighbour.isObstacle;
   const neighbourIsNotInClosed = !neighbour.isInClosed;
@@ -32,7 +32,7 @@ export const initNodesGrid = (
   size: number,
   end: Point,
   obstacles: Point[],
-): Node[][] =>
+): MNode[][] =>
   [...Array(size)].map((_, y) =>
     [...Array(size)].map((_, x) => {
       const node = defaultNode(x, y);
@@ -42,8 +42,8 @@ export const initNodesGrid = (
     }),
   );
 
-export const getNodeWithSmallestF = (openNodes: Node[]): Node =>
+export const getNodeWithSmallestF = (openNodes: MNode[]): MNode =>
   openNodes.sort((n1, n2) => n1.f - n2.f)[0];
 
-const calculateEuclideanH = (node: Node, end: Point) =>
+const calculateEuclideanH = (node: MNode, end: Point) =>
   Math.sqrt(Math.pow(node.x - end.x, 2) + Math.pow(node.y - end.y, 2));
